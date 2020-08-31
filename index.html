@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="location-name" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="search-button" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id="weather-img" src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="place">Dhaka</h1>
+            <h3><span id="deg-cel">38.06</span>&deg;C</h3>
+            <h1 id="situation" class="lead">Clouds</h1>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("search-button").addEventListener("click", function(){
+            const location = document.getElementById("location-name");
+            callApi(location.value);
+        })
+        dynamic("Dhaka");
+
+        function callApi(place){
+            dynamic(place)
+        }
+
+        function dynamic(place){
+            let api = `https://api.openweathermap.org/data/2.5/weather?q=${place},&units=metric&appid=472307dc7a3fd981e8df00031e019f06`
+            fetch(api)
+            .then(response => response.json())
+            .then(data =>{
+                work(data)
+                            
+            });
+        }
+
+        function work(data){
+                let image = document.getElementById("weather-img")
+                image.setAttribute("src", `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`)
+                document.getElementById("place").innerText = data.name;
+                document.getElementById("deg-cel").innerText = data.main.temp   
+                document.getElementById("situation").innerText = data.weather[0].main 
+        }
+        
+    </script>
+</body>
+
+</html>
